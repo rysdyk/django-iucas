@@ -4,15 +4,19 @@ Utility Methods for Authenticating against and using Indiana University CAS.
 import httplib2
 from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.conf import settings
 
 def validate_cas_ticket(casticket, casurl):
     """
     Takes a CAS Ticket and makes the out of bound GET request to 
     cas.iu.edu to verify the ticket.
     """
-    validate_url = 'https://cas.iu.edu/cas/validate?cassvc=IU&casurl=%s&casticket=%s' %    (casurl,casticket)
-    h = httplib2.Http()
+    validate_url = 'https://%s/cas/validate?cassvc=IU&casurl=%s&casticket=%s' % \
+        (settings.CAS_HOST, casurl, casticket)
+    if hasattr(settings, 'CAS_HTTP_CERT'):
+        h = httplib2.Http(ca_certs=settings.CAS_HTTP_CERT)
+    else:
+        h = httplib2.Http() 
     resp, content = h.request(validate_url,"GET")
     return content.splitlines()
 
