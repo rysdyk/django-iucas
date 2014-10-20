@@ -20,6 +20,17 @@ def validate_cas_ticket(casticket, casurl):
     resp, content = h.request(validate_url,"GET")
     return content.splitlines()
 
+
+def get_cas_username(casticket, casurl):
+    """
+    Validates the given casticket and casurl and returns the username of the
+    logged in user. If the user is not logged in returns None 
+    """
+    resp = validate_cas_ticket(casticket, casurl)
+    if len(resp) == 2 and resp[0] == 'yes':
+        return resp[1]
+    else:
+        return None
     
 class IUCASBackend(object):
     """
