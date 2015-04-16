@@ -1,5 +1,7 @@
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
+from django.contrib import messages
+from django.conf import settings
 
 def iucas_validate(request):
     user = authenticate(ticket=request.GET["casticket"],casurl=request.build_absolute_uri())
@@ -12,6 +14,5 @@ def iucas_validate(request):
             # Return a 'disabled account' error message
             pass
     else:
-        # Return an 'invalid login' error message.
-        pass
+        messages.error(request, settings.CAS_NOT_REGISTERED_MSG)
     return HttpResponseRedirect(redirect_url)
