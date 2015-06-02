@@ -11,8 +11,8 @@ def validate_cas_ticket(casticket, casurl):
     Takes a CAS Ticket and makes the out of bound GET request to 
     cas.iu.edu to verify the ticket.
     """
-    validate_url = 'https://%s/cas/validate?cassvc=IU&casurl=%s&casticket=%s' % \
-        (settings.CAS_HOST, casurl, casticket)
+    validate_url = 'https://%s/cas/validate?cassvc=IU&casurl=%s' % \
+        (settings.CAS_HOST, casurl,)
     if hasattr(settings, 'CAS_HTTP_CERT'):
         h = httplib2.Http(ca_certs=settings.CAS_HTTP_CERT)
     else:
