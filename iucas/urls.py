@@ -1,7 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from iucas import views
 
-urlpatterns = patterns('', 
+urlpatterns = [
+# '',
     url(r'^iucas/$', views.iucas_validate, name="iucas_validate"),
-)
+]
 
