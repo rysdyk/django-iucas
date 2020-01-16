@@ -27,7 +27,7 @@ def get_cas_username(casticket, casurl):
     logged in user. If the user is not logged in returns None
     """
     resp = validate_cas_ticket(casticket, casurl)
-    if len(resp) == 2 and resp[0] == 'yes':
+    if len(resp) == 2 and resp[0].decode('utf-8') == 'yes':
         return resp[1]
     else:
         return None
@@ -38,7 +38,7 @@ class IUCASBackend(object):
     """
     def authenticate(self, ticket, casurl):
         resp = validate_cas_ticket(ticket, casurl)
-        if len(resp) == 2 and resp[0] == 'yes':
+        if len(resp) == 2 and resp[0].decode('utf-8') == 'yes':
             username = resp[1]
             if not username:
                 return None
