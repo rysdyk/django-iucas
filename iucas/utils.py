@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
+
 def validate_cas_ticket(casticket, casurl):
     """
     Takes a CAS Ticket and makes the out of bound GET request to
@@ -15,8 +16,6 @@ def validate_cas_ticket(casticket, casurl):
 
     Be aware: the cas ticket may be validated only once, and within two seconds of being created.
     """
-    print('IUCAS VALIDATE')
-
     validate_url = 'https://%s/cas/validate?cassvc=IU&casurl=%s' % \
         (settings.CAS_HOST, casurl,)
     
@@ -27,33 +26,31 @@ def validate_cas_ticket(casticket, casurl):
     
     resp, content = h.request(validate_url,"GET")
     
-    # python3 requires this decode before split lines
+    # content is a bytestring and requires this decode before splitlines()
     return content.decode('utf-8').splitlines()
 
 
-def get_cas_username(casticket, casurl):
-    """
-    Validates the given casticket and casurl and returns the username of the
-    logged in user. If the user is not logged in returns None
+# def get_cas_username(casticket, casurl):
+#     """
+#     Validates the given casticket and casurl and returns the username of the
+#     logged in user. If the user is not logged in returns None
 
-    I don't think is being used anymore
-    """
-    resp = validate_cas_ticket(casticket, casurl)
-    if len(resp) == 2 and resp[0] == 'yes':
-        return resp[1]
-    else:
-        return None
+#     I don't think is being used anymore
+#     """
+#     resp = validate_cas_ticket(casticket, casurl)
+#     if len(resp) == 2 and resp[0] == 'yes':
+#         return resp[1]
+#     else:
+#         return None
 
 class IUCASBackend(object):
     """
     IUCAS Authentication Backend for Django
     """
-    def authenticate(self, ticket, casurl):
-        print('IUCAS AUTHENTICATE')
-        
+    def authenticate(self, request, ticket, casurl):
         resp = validate_cas_ticket(ticket, casurl)
-        
-        if str(resp[0]) == 'yes':
+
+        if len(resp) == 2 and resp[0] == 'yes':
             username = resp[1]
             
             if not username:

@@ -20,6 +20,8 @@ def iucas_validate(request):
             # Redirect to a success page.
         else:
             # Return a 'disabled account' error message
+            messages.error(request, ('This user account has been disabled. '
+                'Please contant the KTB if this is an error'))
             pass
     else:
         messages.error(request, settings.CAS_NOT_REGISTERED_MSG)
