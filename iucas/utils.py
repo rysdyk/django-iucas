@@ -43,11 +43,11 @@ def validate_cas_ticket(casticket, casurl):
 #     else:
 #         return None
 
-class IUCASBackend(object):
+class IUCASBackend:
     """
     IUCAS Authentication Backend for Django
     """
-    def authenticate(self, request, ticket, casurl):
+    def authenticate(self, request, ticket=None, casurl=None):
         resp = validate_cas_ticket(ticket, casurl)
 
         if len(resp) == 2 and resp[0] == 'yes':
