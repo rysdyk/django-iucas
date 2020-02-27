@@ -66,8 +66,8 @@ class IUCASBackend:
         else:
             return None
 
-    def get_user(self, user_id):
+    def get_user(self, id):
         try:
-            return User.objects.get(pk=user_id)
+            return User.objects.get(pk=id)
         except User.DoesNotExist:
             return None
