@@ -18,11 +18,16 @@ def iucas_validate(request):
         if user.is_active:
             print('4' * 30, flush=True)
             print(user, flush=True)
+
+            print('4' * 40)
+            print(request.session.keys())
             
             try:
                 login(request, user)
+                print('5' * 40)
+                print(request.session.keys())
             except Exception as e:
-                print('5' * 30, flush=True)
+                print('6' * 30, flush=True)
                 print(e, flush=True)
             # Redirect to a success page.
         else:
