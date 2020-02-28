@@ -50,8 +50,14 @@ class IUCASBackend:
     def authenticate(self, request, ticket=None, casurl=None):
         resp = validate_cas_ticket(ticket, casurl)
 
+        print('AUTH' * 4, flush=True)
+        print(resp, flush=True)
+
         if len(resp) == 2 and resp[0] == 'yes':
             username = resp[1]
+
+            print('NAME' * 4, flush=True)
+            print(username, flush=True)
             
             if not username:
                 return None
@@ -67,7 +73,12 @@ class IUCASBackend:
             return None
 
     def get_user(self, id):
+
+        print('GETUSER' * 4, flush=True)
+        print(id, flush=True)
+
         try:
             return User.objects.get(pk=id)
         except User.DoesNotExist:
+            print('NOPE' * 4, flush=True)
             return None
