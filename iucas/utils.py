@@ -47,16 +47,16 @@ class IUCASBackend:
     """
     IUCAS Authentication Backend for Django
     """
-    def authenticate(self, request, ticket=None, casurl=None):
+    def authenticate(self, request, ticket, casurl):
         resp = validate_cas_ticket(ticket, casurl)
 
-        print('AUTH' * 4, flush=True)
+        print('1' * 30, flush=True)
         print(resp, flush=True)
 
         if len(resp) == 2 and resp[0] == 'yes':
             username = resp[1]
 
-            print('NAME' * 4, flush=True)
+            print('2' * 30, flush=True)
             print(username, flush=True)
             
             if not username:
@@ -65,6 +65,8 @@ class IUCASBackend:
             try:
                 user = User.objects.get(username__iexact=username)
             except User.DoesNotExist:
+                print('3' * 30, flush=True)
+                print('This User Dont exist!', flush=True)
                 return username
             
             return user
@@ -74,11 +76,11 @@ class IUCASBackend:
 
     def get_user(self, id):
 
-        print('GETUSER' * 4, flush=True)
+        print('8' * 30, flush=True)
         print(id, flush=True)
 
         try:
             return User.objects.get(pk=id)
         except User.DoesNotExist:
-            print('NOPE' * 4, flush=True)
+            print('9' * 30, flush=True)
             return None

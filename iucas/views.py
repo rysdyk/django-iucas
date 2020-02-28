@@ -16,7 +16,14 @@ def iucas_validate(request):
     
     if user is not None:
         if user.is_active:
-            login(request, user)
+            print('4' * 30, flush=True)
+            print(user, flush=True)
+            
+            try:
+                login(request, user)
+            except Exception as e:
+                print('5' * 30, flush=True)
+                print(e, flush=True)
             # Redirect to a success page.
         else:
             # Return a 'disabled account' error message
