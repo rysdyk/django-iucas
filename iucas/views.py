@@ -11,7 +11,7 @@ def iucas_validate(request):
     # the authenicate method comes from this package's utils.py file
     # however, it doesn't need to be imported because it is specified 
     # in AUTHENTICATION_BACKENDS in opal.settings
-    user = authenticate(ticket=request.GET["casticket"],casurl=request.build_absolute_uri())
+    user = authenticate(ticket=request.GET["ticket"],casurl=request.build_absolute_uri())
     redirect_url = request.GET["next"]
     
     if user is not None:

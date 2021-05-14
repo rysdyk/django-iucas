@@ -16,7 +16,10 @@ def validate_cas_ticket(casticket, casurl):
 
     Be aware: the cas ticket may be validated only once, and within two seconds of being created.
     """
-    validate_url = 'https://%s/cas/validate?cassvc=IU&casurl=%s' % \
+    #validate_url = 'https://%s/cas/validate?cassvc=IU&casurl=%s' % \
+    #    (settings.CAS_HOST, casurl,)
+
+    validate_url = 'https://%s/idp/profile/cas/login?service=%s' % \
         (settings.CAS_HOST, casurl,)
     
     if hasattr(settings, 'CAS_HTTP_CERT'):
