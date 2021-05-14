@@ -7,27 +7,28 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.conf import settings
 
 
-def validate_cas_ticket(casticket, casurl):
+def validate_cas_ticket(ticket, casurl):
     """
     Takes a CAS Ticket and makes the out of bound GET request to
     cas.iu.edu to verify the ticket.
 
     see: https://kb.iu.edu/d/bfpq#validate
 
-    Be aware: the cas ticket may be validated only once, and within two seconds of being created.
+    Be aware: the cas ticket may be validated only once, 
+    and within two seconds of being created.
     """
     #validate_url = 'https://%s/cas/validate?cassvc=IU&casurl=%s' % \
     #    (settings.CAS_HOST, casurl,)
 
-    validate_url = 'https://%s/idp/profile/cas/login?service=%s' % \
-        (settings.CAS_HOST, casurl,)
+    validate_url = 'https://%s/idp/profile/cas/serviceValidate?ticket=%s&service=%s' % \
+        (settings.CAS_HOST, ticket, casurl,)
     
     if hasattr(settings, 'CAS_HTTP_CERT'):
         h = httplib2.Http(ca_certs=settings.CAS_HTTP_CERT)
     else:
         h = httplib2.Http()
     
-    resp, content = h.request(validate_url,"GET")
+    resp, content = h.request(validate_url, "GET")
     
     # content is a bytestring and requires this decode before splitlines()
     return content.decode('utf-8').splitlines()
