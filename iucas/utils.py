@@ -53,6 +53,8 @@ class IUCASBackend:
     """
     def authenticate(self, request, ticket, casurl):
         resp = validate_cas_ticket(ticket, casurl)
+        print('2' * 30)
+        print(resp)
 
         if len(resp) == 2 and resp[0] == 'yes':
             username = resp[1]
