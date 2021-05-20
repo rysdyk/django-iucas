@@ -22,6 +22,9 @@ def validate_cas_ticket(ticket, casurl):
 
     validate_url = 'https://%s/idp/profile/cas/serviceValidate?ticket=%s&service=%s' % \
         (settings.CAS_HOST, ticket, casurl,)
+
+    print('1' * 30)
+    print(validate_url)
     
     if hasattr(settings, 'CAS_HTTP_CERT'):
         h = httplib2.Http(ca_certs=settings.CAS_HTTP_CERT)
