@@ -24,6 +24,8 @@ def validate_cas_ticket(ticket, casurl):
         (settings.CAS_HOST, ticket, casurl,)
 
     print('1' * 30)
+    print(casurl)
+    print('2' * 30)
     print(validate_url)
     
     if hasattr(settings, 'CAS_HTTP_CERT'):
@@ -56,7 +58,7 @@ class IUCASBackend:
     """
     def authenticate(self, request, ticket, casurl):
         resp = validate_cas_ticket(ticket, casurl)
-        print('2' * 30)
+        print('3' * 30)
         print(resp)
 
         if len(resp) == 2 and resp[0] == 'yes':
