@@ -11,8 +11,14 @@ def iucas_validate(request):
     # the authenicate method comes from this package's utils.py file
     # however, it doesn't need to be imported because it is specified 
     # in AUTHENTICATION_BACKENDS in opal.settings
-    user = authenticate(ticket=request.GET["ticket"],casurl=request.build_absolute_uri())
-    redirect_url = request.GET["next"]
+    user = authenticate(
+        ticket=request.GET["ticket"],
+        casurl='https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
+    )
+    try:
+        redirect_url = request.GET["next"]
+    except:
+        redirect_url = 'https://ktbdbms.iusm.iu.edu/ktb'
     
     if user is not None:
         if user.is_active:
