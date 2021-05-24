@@ -23,10 +23,10 @@ def validate_cas_ticket(ticket, casurl):
     validate_url = 'https://%s/idp/profile/cas/serviceValidate?ticket=%s&service=%s' % \
         (settings.CAS_HOST, ticket, casurl,)
 
-    print('1' * 30)
-    print(casurl)
-    print('2' * 30)
-    print(validate_url)
+    # print('1' * 30)
+    # print(casurl)
+    # print('2' * 30)
+    # print(validate_url)
     
     if hasattr(settings, 'CAS_HTTP_CERT'):
         h = httplib2.Http(ca_certs=settings.CAS_HTTP_CERT)
@@ -61,8 +61,9 @@ class IUCASBackend:
         print('3' * 30)
         print(resp)
 
-        if len(resp) == 2 and resp[0] == 'yes':
-            username = resp[1]
+        #if len(resp) == 2 and resp[0] == 'yes':
+        if 'authenticationSuccess' in resp[2]:
+            username = resp[3][resp[3].find('>')+1:resp[3].find('</')]
             
             if not username:
                 return None
