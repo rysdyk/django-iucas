@@ -13,8 +13,11 @@ def iucas_validate(request):
     # in AUTHENTICATION_BACKENDS in opal.settings
     user = authenticate(
         ticket=request.GET["ticket"],
-        casurl='https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
+        casurl=request.GET["next"] #'https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
     )
+
+    # casurl can include /?next= param
+
     try:
         redirect_url = request.GET["next"]
     except:

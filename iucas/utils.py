@@ -61,7 +61,14 @@ class IUCASBackend:
         print('3' * 30)
         print(resp)
 
-        #if len(resp) == 2 and resp[0] == 'yes':
+        # a success response from validate_cas_ticket will be a list like this:
+        # resp = ['<?xml version="1.0" encoding="UTF-8"?>', 
+        # '<cas:serviceResponse xmlns:cas="http://www.yale.edu/tp/cas">', 
+        # '  <cas:authenticationSuccess>', 
+        # '    <cas:user>srysdyk</cas:user>', 
+        # '  </cas:authenticationSuccess>', 
+        # '</cas:serviceResponse>']
+
         if 'authenticationSuccess' in resp[2]:
             username = resp[3][resp[3].find('>')+1:resp[3].find('</')]
             
