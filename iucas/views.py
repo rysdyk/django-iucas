@@ -13,7 +13,7 @@ def iucas_validate(request):
     # in AUTHENTICATION_BACKENDS in opal.settings
     user = authenticate(
         ticket=request.GET["ticket"],
-        casurl='https://' + request.GET["next"] #'https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
+        casurl= request.get_host() + request.GET["next"] #'https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
     )
 
     # casurl can include /?next= param
@@ -34,7 +34,7 @@ def iucas_validate(request):
             pass
     else:
         # todo remove ticket
-        r = request[:request.find('ticket')]
+        r = request[:request.find('?ticket')]
         messages.error(r, settings.CAS_NOT_REGISTERED_MSG)
     
     return HttpResponseRedirect(redirect_url)
