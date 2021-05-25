@@ -11,16 +11,10 @@ def iucas_validate(request):
     # the authenicate method comes from this package's utils.py file
     # however, it doesn't need to be imported because it is specified 
     # in AUTHENTICATION_BACKENDS in opal.settings
-    print('1' * 30)
-    print(request.GET["ticket"])
-    print(request.get_host())
-    print(request.GET["next"])
     user = authenticate(
         ticket=request.GET["ticket"],
-        casurl= 'https://' + request.get_host() + request.GET["next"] #'https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
+        casurl='https://' + request.get_host() + request.GET["next"]
     )
-
-    # casurl can include /?next= param
 
     try:
         redirect_url = request.GET["next"]
@@ -37,7 +31,6 @@ def iucas_validate(request):
                 'Please contant the KTB if this is an error'))
             pass
     else:
-        # todo remove ticket
         r = request[:request.find('%3Fticket')]
         messages.error(r, settings.CAS_NOT_REGISTERED_MSG)
     
