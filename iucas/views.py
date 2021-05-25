@@ -11,6 +11,10 @@ def iucas_validate(request):
     # the authenicate method comes from this package's utils.py file
     # however, it doesn't need to be imported because it is specified 
     # in AUTHENTICATION_BACKENDS in opal.settings
+    print('1' * 30)
+    print(request.GET["ticket"])
+    print(request.get_host())
+    print(request.GET["next"])
     user = authenticate(
         ticket=request.GET["ticket"],
         casurl= 'https://' + request.get_host() + request.GET["next"] #'https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
@@ -21,7 +25,7 @@ def iucas_validate(request):
     try:
         redirect_url = request.GET["next"]
     except:
-        redirect_url = 'https://' + request.get_host()
+        redirect_url = '/'
     
     if user is not None:
         if user.is_active:
@@ -34,7 +38,7 @@ def iucas_validate(request):
             pass
     else:
         # todo remove ticket
-        r = request[:request.find('?ticket')]
+        r = request[:request.find('%3Fticket')]
         messages.error(r, settings.CAS_NOT_REGISTERED_MSG)
     
     return HttpResponseRedirect(redirect_url)
