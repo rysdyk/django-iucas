@@ -13,7 +13,7 @@ def iucas_validate(request):
     # in AUTHENTICATION_BACKENDS in opal.settings
     user = authenticate(
         ticket=request.GET["ticket"],
-        casurl=request.GET["next"] #'https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
+        casurl='https://' + request.GET["next"] #'https://ktbdbms.iusm.iu.edu/' #request.build_absolute_uri()
     )
 
     # casurl can include /?next= param
@@ -33,6 +33,8 @@ def iucas_validate(request):
                 'Please contant the KTB if this is an error'))
             pass
     else:
-        messages.error(request, settings.CAS_NOT_REGISTERED_MSG)
+        # todo remove ticket
+        r = request[:request.find('ticket')]
+        messages.error(r, settings.CAS_NOT_REGISTERED_MSG)
     
     return HttpResponseRedirect(redirect_url)
